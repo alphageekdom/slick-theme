@@ -27,7 +27,7 @@
       {%- render 'social-icons' -%}
     {%- endif -%}
     {%- if section.blocks.size == 1 -%}
-      <div class='announce-bar' style="background: {{ section.settings.background_color }} ; color: {{ section.settings.announcement_text_color }};"  aria-label="{{ 'sections.header.announcement' | t }}"
+      <div class='announce-bar' style="background: {{ section.settings.background_color }} ; color: {{ section.settings.announcement_text_color }}; text-decoration: none;"  aria-label="{{ 'sections.header.announcement' | t }}"
         {{ block.shopify_attributes }}>
         {%- if section.blocks.first.settings.text != blank -%}
           {%- if section.blocks.first.settings.link != blank -%}
