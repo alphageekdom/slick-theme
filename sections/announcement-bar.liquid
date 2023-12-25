@@ -27,13 +27,20 @@
       {%- render 'social-icons' -%}
     {%- endif -%}
     {%- if section.blocks.size == 1 -%}
-      <div class='announce-bar' style="background: {{ section.settings.background_color }} ; color: {{ section.settings.announcement_text_color }};"  aria-label="{{ 'sections.header.announcement' | t }}"
-        {{ block.shopify_attributes }}>
+      <div
+        class="announce-bar"
+        style="background: {{ section.settings.background_color }} ; color: {{ section.settings.announcement_text_color }};"
+        aria-label="{{ 'sections.header.announcement' | t }}"
+        {{ block.shopify_attributes }}
+      >
         {%- if section.blocks.first.settings.text != blank -%}
           {%- if section.blocks.first.settings.link != blank -%}
-            <a href="{{ section.blocks.first.settings.link }}" style="color: {{ section.settings.announcement_text_color }}; text-decoration: none;">
+            <a
+              href="{{ section.blocks.first.settings.link }}"
+              style="color: {{ section.settings.announcement_text_color }}; text-decoration: none;"
+            >
           {%- endif -%}
-            {{ section.blocks.first.settings.text | escape }}
+          {{ section.blocks.first.settings.text | escape }}
           {%- if section.blocks.first.settings.link != blank -%}
             </a>
           {%- endif -%}
