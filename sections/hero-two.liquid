@@ -1,0 +1,217 @@
+<div class="hero hero2 hero2--{{ section.settings.hero_height}}">
+  <div class="hero2__collection1">
+    <div
+      class="hero2__bg image-with-text__media image-with-text__media--{{ section.settings.height }} global-media-settings{% unless remove_color_classes %} gradient color-{{ section.settings.color_scheme }}{% else %} background-transparent{% endunless %}{% if section.settings.image1 != blank %} media{% else %} image-with-text__media--placeholder placeholder{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}"
+      {% if section.settings.height == 'adapt' and section.settings.image1 != blank %}
+        style="padding-bottom: {{ 1 | divided_by: section.settings.image1.aspect_ratio | times: 100 }}%;"
+      {% endif %}
+    >
+      {%- if section.settings.image1 != blank -%}
+        {%- if section.settings.image_behavior == 'ambient' or section.settings.image_behavior == 'zoom-in' -%}
+          {%- assign widths = '198, 432, 642, 900, 1284, 1800' -%}
+          {%- capture sizes -%}
+            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 1.6667 }}px,
+            (min-width: 750px) calc((100vw - 130px) / 1.667), calc((100vw - 50px) / 1.667)
+          {%- endcapture -%}
+        {%- else -%}
+          {%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
+          {%- capture sizes -%}
+            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+            (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+          {%- endcapture -%}
+        {%- endif -%}
+        {{
+          section.settings.image1
+          | image_url: width: 1500
+          | image_tag: sizes: sizes, widths: widths, fetchpriority: fetch_priority
+        }}
+      {%- else -%}
+        {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+    {% assign opacity1 = section.settings.opacity1 | divided_by: 100.00 %}
+    <div
+      class="hero2__content-container"
+      style="background-color: {{ section.settings.background1 | color_modify: 'alpha', opacity1 }};"
+    >
+      <div class="hero2__info">
+        <a href="{{ section.settings.button_link1 }}" class="hero2__button" {{ block.shopify_attributes }}>
+          {{ section.settings.button_label1 | escape -}}
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="hero2__collection2">
+    <div
+      class="hero2__bg image-with-text__media image-with-text__media--{{ section.settings.height }} global-media-settings{% unless remove_color_classes %} gradient color-{{ section.settings.color_scheme }}{% else %} background-transparent{% endunless %}{% if section.settings.image2 != blank %} media{% else %} image-with-text__media--placeholder placeholder{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}"
+      {% if section.settings.height == 'adapt' and section.settings.image2 != blank %}
+        style="padding-bottom: {{ 1 | divided_by: section.settings.image2.aspect_ratio | times: 100 }}%;"
+      {% endif %}
+    >
+      {%- if section.settings.image2 != blank -%}
+        {%- if section.settings.image_behavior == 'ambient' or section.settings.image_behavior == 'zoom-in' -%}
+          {%- assign widths = '198, 432, 642, 900, 1284, 1800' -%}
+          {%- capture sizes -%}
+            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 1.6667 }}px,
+            (min-width: 750px) calc((100vw - 130px) / 1.667), calc((100vw - 50px) / 1.667)
+          {%- endcapture -%}
+        {%- else -%}
+          {%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
+          {%- capture sizes -%}
+            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+            (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+          {%- endcapture -%}
+        {%- endif -%}
+        {{
+          section.settings.image2
+          | image_url: width: 1500
+          | image_tag: sizes: sizes, widths: widths, fetchpriority: fetch_priority
+        }}
+      {%- else -%}
+        {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+    {% assign opacity2 = section.settings.opacity2 | divided_by: 100.00 %}
+    <div
+      class="hero2__content-container"
+      style="background-color: {{ section.settings.background2 | color_modify: 'alpha', opacity2 }};"
+    >
+      <div class="hero2__info">
+        <a href="{{ section.settings.button_link2 }}" class="hero2__button" {{ block.shopify_attributes }}>
+          {{ section.settings.button_label2 | escape -}}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign fetch_priority = 'high'
+  endif
+  if section.settings.color_scheme == section.settings.section_color_scheme and section.settings.content_layout == 'no-overlap'
+    assign remove_color_classes = true
+  endif
+-%}
+
+{% schema %}
+{
+  "name": "Hero Two",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "hero_height",
+      "options": [
+        {
+          "value": "25vh",
+          "label": "25%"
+        },
+        {
+          "value": "50vh",
+          "label": "50%"
+        },
+        {
+          "value": "75vh",
+          "label": "75%"
+        },
+        {
+          "value": "100vh",
+          "label": "100%"
+        }
+      ],
+      "default": "100vh",
+      "label": "Height"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "t:sections.image-with-text.settings.image.label"
+    },
+    {
+      "type": "color",
+      "id": "background1",
+      "label": "Background",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "opacity1",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Opacity",
+      "default": 50
+    },
+
+    {
+      "type": "text",
+      "id": "button_label1",
+      "default": "Button label",
+      "label": "t:sections.image-with-text.blocks.button.settings.button_label.label",
+      "info": "t:sections.image-with-text.blocks.button.settings.button_label.info"
+    },
+    {
+      "type": "url",
+      "id": "button_link1",
+      "label": "Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "t:sections.image-with-text.settings.image.label"
+    },
+    {
+      "type": "color",
+      "id": "background2",
+      "label": "Background",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "opacity2",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Opacity",
+      "default": 50
+    },
+
+    {
+      "type": "text",
+      "id": "button_label2",
+      "default": "Button label",
+      "label": "t:sections.image-with-text.blocks.button.settings.button_label.label",
+      "info": "t:sections.image-with-text.blocks.button.settings.button_label.info"
+    },
+    {
+      "type": "url",
+      "id": "button_link2",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Two"
+    }
+  ]
+}
+{% endschema %}
