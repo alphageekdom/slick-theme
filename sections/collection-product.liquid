@@ -1,78 +1,82 @@
-<div class="collection collection1">
-  <div class="container">
-    <div class="row">
-      {%- for product in section.settings.collection.products limit: section.settings.total_products -%}
-        <div class="{{ section.settings.xxl_col }} {{ section.settings.xl_col }} {{ section.settings.lg_col }} {{ section.settings.md_col }} {{ section.settings.sm_col }}">
-          <div class="collection1__collection-item">
-            {% assign opacity = section.settings.opacity | divided_by: 100.00 %}
-            <div
-              class="collection1__product-img collection1__product-img--{{ section.settings.container_shape }} collection1__product-img--{{ section.settings.image_fit }} image-with-text__media image-with-text__media--{{ section.settings.height }} global-media-settings{% unless remove_color_classes %} gradient color-{{ section.settings.color_scheme }}{% else %} background-transparent{% endunless %}{% if product.images[0] != blank %} media{% else %} image-with-text__media--placeholder placeholder{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}"
-            >
-              <div class="collection1__heart">
-                <svg
-                  stroke="currentColor"
-                  fill="currentColor"
-                  stroke-width="0"
-                  viewBox="0 0 24 24"
-                  height="1em"
-                  width="1em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g id="Heart"><path d="M12,20.043a.977.977,0,0,1-.7-.288L4.63,13.08A5.343,5.343,0,0,1,6.053,4.513,5.266,5.266,0,0,1,12,5.371a5.272,5.272,0,0,1,5.947-.858A5.343,5.343,0,0,1,19.37,13.08l-6.676,6.675A.977.977,0,0,1,12,20.043ZM8.355,4.963A4.015,4.015,0,0,0,6.511,5.4,4.4,4.4,0,0,0,4.122,8.643a4.345,4.345,0,0,0,1.215,3.73l6.675,6.675,6.651-6.675a4.345,4.345,0,0,0,1.215-3.73A4.4,4.4,0,0,0,17.489,5.4a4.338,4.338,0,0,0-4.968.852h0a.744.744,0,0,1-1.042,0A4.474,4.474,0,0,0,8.355,4.963Z"></path></g>
-                </svg>
-              </div>
-
-              <a
-                href="{{ product.url }}"
-                class="collection1__product-img img-link collection1__product-img--{{ section.settings.container_shape }}"
-                style="background-color: {{ section.settings.background | color_modify: 'alpha', opacity }};"
+{% if section.settings.collection.all_products_count %}
+  <div class="collection collection1">
+    <div class="container">
+      <div class="row">
+        {%- for product in section.settings.collection.products limit: section.settings.total_products -%}
+          <div class="{{ section.settings.xxl_col }} {{ section.settings.xl_col }} {{ section.settings.lg_col }} {{ section.settings.md_col }} {{ section.settings.sm_col }}">
+            <div class="collection1__collection-item">
+              {% assign opacity = section.settings.opacity | divided_by: 100.00 %}
+              <div
+                class="collection1__product-img collection1__product-img--{{ section.settings.container_shape }} collection1__product-img--{{ section.settings.image_fit }} image-with-text__media image-with-text__media--{{ section.settings.height }} global-media-settings{% unless remove_color_classes %} gradient color-{{ section.settings.color_scheme }}{% else %} background-transparent{% endunless %}{% if product.images[0] != blank %} media{% else %} image-with-text__media--placeholder placeholder{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}"
               >
-                {%- if product.images[0] != blank -%}
-                  {%- if section.settings.image_behavior == 'ambient'
-                    or section.settings.image_behavior == 'zoom-in'
-                  -%}
-                    {%- assign widths = '198, 432, 642, 900, 1284, 1800' -%}
-                    {%- capture sizes -%}
+                <div class="collection1__heart">
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    stroke-width="0"
+                    viewBox="0 0 24 24"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="Heart"><path d="M12,20.043a.977.977,0,0,1-.7-.288L4.63,13.08A5.343,5.343,0,0,1,6.053,4.513,5.266,5.266,0,0,1,12,5.371a5.272,5.272,0,0,1,5.947-.858A5.343,5.343,0,0,1,19.37,13.08l-6.676,6.675A.977.977,0,0,1,12,20.043ZM8.355,4.963A4.015,4.015,0,0,0,6.511,5.4,4.4,4.4,0,0,0,4.122,8.643a4.345,4.345,0,0,0,1.215,3.73l6.675,6.675,6.651-6.675a4.345,4.345,0,0,0,1.215-3.73A4.4,4.4,0,0,0,17.489,5.4a4.338,4.338,0,0,0-4.968.852h0a.744.744,0,0,1-1.042,0A4.474,4.474,0,0,0,8.355,4.963Z"></path></g>
+                  </svg>
+                </div>
+
+                <a
+                  href="{{ product.url }}"
+                  class="collection1__product-img img-link collection1__product-img--{{ section.settings.container_shape }}"
+                  style="background-color: {{ section.settings.background | color_modify: 'alpha', opacity }};"
+                >
+                  {%- if product.images[0] != blank -%}
+                    {%- if section.settings.image_behavior == 'ambient'
+                      or section.settings.image_behavior == 'zoom-in'
+                    -%}
+                      {%- assign widths = '198, 432, 642, 900, 1284, 1800' -%}
+                      {%- capture sizes -%}
                         (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 1.6667 }}px,
                         (min-width: 750px) calc((100vw - 130px) / 1.667), calc((100vw - 50px) / 1.667)
                       {%- endcapture -%}
-                  {%- else -%}
-                    {%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
-                    {%- capture sizes -%}
+                    {%- else -%}
+                      {%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
+                      {%- capture sizes -%}
                         (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
                         (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
                       {%- endcapture -%}
+                    {%- endif -%}
+                    {{
+                      product.images[0]
+                      | image_url: width: 1500
+                      | image_tag: sizes: sizes, widths: widths, fetchpriority: fetch_priority
+                    }}
+                  {%- else -%}
+                    {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
                   {%- endif -%}
-                  {{
-                    product.images[0]
-                    | image_url: width: 1500
-                    | image_tag: sizes: sizes, widths: widths, fetchpriority: fetch_priority
-                  }}
-                {%- else -%}
-                  {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                {%- endif -%}
-              </a>
+                </a>
+              </div>
+            </div>
+            <div class="collection1__product-info">
+              <div class="collection1__product-details">
+                {% if section.settings.show_title == true %}
+                  <span class="collection1__product-title">{{ product.title }}</span>
+                {% endif %}
+                {% if section.settings.show_price == true %}
+                  <span class="collection1__product-span">{{ product.price | money }}</span>
+                {% endif %}
+              </div>
+              <div class="collection1__colors">
+                <div class="collection1__color collection1__color--purple"></div>
+                <div class="collection1__color collection1__color--blue"></div>
+              </div>
             </div>
           </div>
-          <div class="collection1__product-info">
-            <div class="collection1__product-details">
-              {% if section.settings.show_title == true %}
-                <span class="collection1__product-title">{{ product.title }}</span>
-              {% endif %}
-              {% if section.settings.show_price == true %}
-                <span class="collection1__product-span">{{ product.price | money }}</span>
-              {% endif %}
-            </div>
-            <div class="collection1__colors">
-              <div class="collection1__color collection1__color--purple"></div>
-              <div class="collection1__color collection1__color--blue"></div>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
+        {% endfor %}
+      </div>
     </div>
   </div>
-</div>
+{% else %}
+  <h1>Show Demo</h1>
+{%- endif %}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
