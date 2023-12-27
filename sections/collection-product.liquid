@@ -1,0 +1,316 @@
+<div class="collection collection1">
+  <div class="container">
+    <div class="row">
+      {%- for product in section.settings.collection.products limit: section.settings.total_products -%}
+        <div class="{{ section.settings.xxl_col }} {{ section.settings.xl_col }} {{ section.settings.lg_col }} {{ section.settings.md_col }} {{ section.settings.sm_col }}">
+          <div class="collection1__collection-item">
+            {% assign opacity = section.settings.opacity | divided_by: 100.00 %}
+            <div
+              class="collection1__product-img collection1__product-img--{{ section.settings.container_shape }} collection1__product-img--{{ section.settings.image_fit }} image-with-text__media image-with-text__media--{{ section.settings.height }} global-media-settings{% unless remove_color_classes %} gradient color-{{ section.settings.color_scheme }}{% else %} background-transparent{% endunless %}{% if product.images[0] != blank %} media{% else %} image-with-text__media--placeholder placeholder{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}"
+            >
+              <div class="collection1__heart">
+                <svg
+                  stroke="currentColor"
+                  fill="currentColor"
+                  stroke-width="0"
+                  viewBox="0 0 24 24"
+                  height="1em"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="Heart"><path d="M12,20.043a.977.977,0,0,1-.7-.288L4.63,13.08A5.343,5.343,0,0,1,6.053,4.513,5.266,5.266,0,0,1,12,5.371a5.272,5.272,0,0,1,5.947-.858A5.343,5.343,0,0,1,19.37,13.08l-6.676,6.675A.977.977,0,0,1,12,20.043ZM8.355,4.963A4.015,4.015,0,0,0,6.511,5.4,4.4,4.4,0,0,0,4.122,8.643a4.345,4.345,0,0,0,1.215,3.73l6.675,6.675,6.651-6.675a4.345,4.345,0,0,0,1.215-3.73A4.4,4.4,0,0,0,17.489,5.4a4.338,4.338,0,0,0-4.968.852h0a.744.744,0,0,1-1.042,0A4.474,4.474,0,0,0,8.355,4.963Z"></path></g>
+                </svg>
+              </div>
+
+              <a
+                href="{{ product.url }}"
+                class="collection1__product-img img-link collection1__product-img--{{ section.settings.container_shape }}"
+                style="background-color: {{ section.settings.background | color_modify: 'alpha', opacity }};"
+              >
+                {%- if product.images[0] != blank -%}
+                  {%- if section.settings.image_behavior == 'ambient'
+                    or section.settings.image_behavior == 'zoom-in'
+                  -%}
+                    {%- assign widths = '198, 432, 642, 900, 1284, 1800' -%}
+                    {%- capture sizes -%}
+                        (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 1.6667 }}px,
+                        (min-width: 750px) calc((100vw - 130px) / 1.667), calc((100vw - 50px) / 1.667)
+                      {%- endcapture -%}
+                  {%- else -%}
+                    {%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
+                    {%- capture sizes -%}
+                        (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+                        (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+                      {%- endcapture -%}
+                  {%- endif -%}
+                  {{
+                    product.images[0]
+                    | image_url: width: 1500
+                    | image_tag: sizes: sizes, widths: widths, fetchpriority: fetch_priority
+                  }}
+                {%- else -%}
+                  {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </a>
+            </div>
+          </div>
+          <div class="collection1__product-info">
+            <div class="collection1__product-details">
+              {% if section.settings.show_title == true %}
+                <span class="collection1__product-title">{{ product.title }}</span>
+              {% endif %}
+              {% if section.settings.show_price == true %}
+                <span class="collection1__product-span">{{ product.price | money }}</span>
+              {% endif %}
+            </div>
+            <div class="collection1__colors">
+              <div class="collection1__color collection1__color--purple"></div>
+              <div class="collection1__color collection1__color--blue"></div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign fetch_priority = 'high'
+  endif
+  if section.settings.color_scheme == section.settings.section_color_scheme and section.settings.content_layout == 'no-overlap'
+    assign remove_color_classes = true
+  endif
+-%}
+
+{% schema %}
+{
+  "name": "Collection Product",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "total_products",
+      "min": 1,
+      "max": 16,
+      "step": 1,
+      "label": "Total Products",
+      "default": 16
+    },
+
+    {
+      "type": "select",
+      "id": "container_shape",
+      "options": [
+        {
+          "value": "rectangle",
+          "label": "Rectangle"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "circle",
+          "label": "Circle"
+        }
+      ],
+      "default": "rectangle",
+      "label": "Product Container Shape"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ],
+      "default": "cover",
+      "label": "Product Image Fit"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#edeff5"
+    },
+    {
+      "type": "range",
+      "id": "opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Color Opacity",
+      "default": 100
+    },
+
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show Title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show Price",
+      "default": true
+    },
+
+    {
+      "type": "select",
+      "id": "xxl_col",
+      "options": [
+        {
+          "value": "col-xxl-6",
+          "label": "2 Columns"
+        },
+        {
+          "value": "col-xxl-4",
+          "label": "3 Columns"
+        },
+        {
+          "value": "col-xxl-3",
+          "label": "4 Columns"
+        },
+        {
+          "value": "col-xxl-2",
+          "label": "6 Columns"
+        }
+      ],
+      "default": "col-xxl-2",
+      "label": "XXL Devices"
+    },
+    {
+      "type": "select",
+      "id": "xl_col",
+      "options": [
+        {
+          "value": "col-xl-6",
+          "label": "2 Columns"
+        },
+        {
+          "value": "col-xl-4",
+          "label": "3 Columns"
+        },
+        {
+          "value": "col-xl-3",
+          "label": "4 Columns"
+        },
+        {
+          "value": "col-xl-2",
+          "label": "6 Columns"
+        }
+      ],
+      "default": "col-xl-3",
+      "label": "XL Devices"
+    },
+    {
+      "type": "select",
+      "id": "lg_col",
+      "options": [
+        {
+          "value": "col-lg-6",
+          "label": "2 Columns"
+        },
+        {
+          "value": "col-lg-4",
+          "label": "3 Columns"
+        },
+        {
+          "value": "col-lg-3",
+          "label": "4 Columns"
+        },
+        {
+          "value": "col-lg-2",
+          "label": "6 Columns"
+        }
+      ],
+      "default": "col-lg-4",
+      "label": "Large Devices"
+    },
+    {
+      "type": "select",
+      "id": "md_col",
+      "options": [
+        {
+          "value": "col-md-6",
+          "label": "2 Columns"
+        },
+        {
+          "value": "col-md-4",
+          "label": "3 Columns"
+        },
+        {
+          "value": "col-md-3",
+          "label": "4 Columns"
+        },
+        {
+          "value": "col-md-2",
+          "label": "6 Columns"
+        }
+      ],
+      "default": "col-md-3",
+      "label": "Medium Devices"
+    },
+    {
+      "type": "select",
+      "id": "sm_col",
+      "options": [
+        {
+          "value": "col-sm-6",
+          "label": "2 Columns"
+        },
+        {
+          "value": "col-sm-4",
+          "label": "3 Columns"
+        },
+        {
+          "value": "col-sm-3",
+          "label": "4 Columns"
+        },
+        {
+          "value": "col-sm-2",
+          "label": "6 Columns"
+        }
+      ],
+      "default": "col-sm-6",
+      "label": "Small Devices"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Product"
+    }
+  ]
+}
+{% endschema %}
